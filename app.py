@@ -12,9 +12,9 @@ np.random.seed(7)
 # %matplotlib inline
 
 content_img = "climber.jpg"
-style_img = "starry_night.jpg"
-epochs = 2
-steps_per_epoch = 1
+style_img = "psych.jpg"
+epochs = 9
+steps_per_epoch = 800
 
 
 class Custom_Style_Model(tf.keras.models.Model):
@@ -60,7 +60,7 @@ class Custom_Style_Model(tf.keras.models.Model):
 def load_image(image):
     image = plt.imread(image)
     img = tf.image.convert_image_dtype(image, tf.float32)
-    img = tf.image.resize(img, [400, 400])
+    img = tf.image.resize(img, [600, 600])
     # Shape -> (batch_size, h, w, d)
     img = img[tf.newaxis, :]
     return img
@@ -178,20 +178,23 @@ style_weights = {
 
 target_image = tf.Variable(content)
 
-
+# Output and running
 step = 0
 photo = 0
+fig = plt.figure(figsize=(3, 3))
+
 for n in range(epochs):
     print(f"epoch: {n}")
     for m in range(steps_per_epoch):
         print(f"step: {m}")
         step += 1
         train_step(target_image)
+    fig.add_subplot(4, 3, photo + 1)
     plt.imshow(np.squeeze(target_image.read_value(), 0))
     plt.title("Train step: {}".format(step))
     img.imsave(
-        f"output/{content_img[:-4]}_{style_img[:-4]}_{n}.png",
+        f"output/{content_img[:-4]}_{style_img[:-4]}_{photo}.png",
         np.squeeze(target_image.read_value(), 0),
     )
-photo += 1
+    photo += 1
 plt.show()
