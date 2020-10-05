@@ -13,6 +13,8 @@ np.random.seed(7)
 
 content_img = "climber.jpg"
 style_img = "starry_night.jpg"
+epochs = 2
+steps_per_epoch = 1
 
 
 class Custom_Style_Model(tf.keras.models.Model):
@@ -176,8 +178,6 @@ style_weights = {
 
 target_image = tf.Variable(content)
 
-epochs = 2
-steps_per_epoch = 1
 
 step = 0
 photo = 0
